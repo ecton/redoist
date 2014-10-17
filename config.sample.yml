@@ -1,0 +1,18 @@
+redmine-api-key: "API KEY GOES HERE"
+redmine-base-url: https://website-hosting-redmine.com
+redmine-issues-query-parameters: assigned_to_id=3
+redmine-status-label-map:
+  "Ready for Feedback": "@feedbacks"
+  "Ready for Code Review": "@feedbacks"
+todoist-priority-map:
+  "Immediate": 4
+  "Urgent": 3
+  "High": 2
+  "High if Simple": 2
+redmine-always-due-today:
+  - Ready for Feedback
+  - Ready for Code Review
+todoist-api-key: "API KEY GOES HERE"
+todoist-project: Redmine
+todoist-tag: "@redmine"
+
