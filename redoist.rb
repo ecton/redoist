@@ -33,7 +33,11 @@ redmineTasks['issues'].each do |issue|
     end
   end
 
-  effective_due = Time.parse(effective_due) unless effective_due.to_s.empty?
+  if effective_due.to_s.empty?
+    effective_due = nil
+  else
+    effective_due = Time.parse(effective_due)
+  end
 
   tags = []
   tags << config["todoist-tag"] unless config["todoist-tag"].to_s.empty?
@@ -51,23 +55,23 @@ redmineTasks['issues'].each do |issue|
   priority = priority_map[issue['priority']['name']] || 1
 
   task = serverTasks.find{|t| t.id == localMap[issue['id'].to_s]}
+  params = {}
+  params["priority"] = priority
+  if effective_due
+    params['date_string'] = effective_due.strftime("%a %b %d %Y 17:00:00")
+  end
   if task && !task.complete?
     puts "Updating task #{issue['id']}"
-    result = Todoist::Base.get('/updateItem', :query => {
-        "id" => task.id,
-        "content" => content,
-        "priority" => priority,
-        "date_string" => effective_due ? effective_due.strftime("%a %b %d %Y 17:00:00") : nil,
-        "due_date" => effective_due ? effective_due.strftime("%Y-%m-%dT17:00") : nil
-      })
+    params["id"] = task.id
+    params["content"] = content
+    params["due_date"] = effective_due.strftime("%Y-%m-%dT17:00") if effective_due
+
+    result = Todoist::Base.get('/updateItem', :query => params)
 
     newLocalMap[issue['id']] = localMap[issue['id'].to_s]
   else
     puts "Creating #{content}"
-    task = Todoist::Task.create(content, project, {
-      "priority" => priority,
-      "date_string" => effective_due ? effective_due.strftime("%a %b %d %Y 17:00:00") : nil
-      })
+    task = Todoist::Task.create(content, project, params)
     newLocalMap[issue['id'].to_s] = task.id
   end
 end
