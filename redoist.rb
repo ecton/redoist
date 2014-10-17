@@ -33,7 +33,7 @@ redmineTasks['issues'].each do |issue|
     end
   end
 
-  effective_due = Time.parse(effective_due)
+  effective_due = Time.parse(effective_due) unless effective_due.to_s.empty?
 
   tags = []
   tags << config["todoist-tag"] unless config["todoist-tag"].to_s.empty?
@@ -57,8 +57,8 @@ redmineTasks['issues'].each do |issue|
         "id" => task.id,
         "content" => content,
         "priority" => priority,
-        "date_string" => effective_due.strftime("%a %b %d %Y 17:00:00"),
-        "due_date" => effective_due.strftime("%Y-%m-%dT17:00")
+        "date_string" => effective_due ? effective_due.strftime("%a %b %d %Y 17:00:00") : nil,
+        "due_date" => effective_due ? effective_due.strftime("%Y-%m-%dT17:00") : nil
       })
 
     newLocalMap[issue['id']] = localMap[issue['id'].to_s]
@@ -66,7 +66,7 @@ redmineTasks['issues'].each do |issue|
     puts "Creating #{content}"
     task = Todoist::Task.create(content, project, {
       "priority" => priority,
-      "date_string" => effective_due.strftime("%a %b %d %Y 17:00:00")
+      "date_string" => effective_due ? effective_due.strftime("%a %b %d %Y 17:00:00") : nil
       })
     newLocalMap[issue['id'].to_s] = task.id
   end
