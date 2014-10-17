@@ -6,7 +6,7 @@
   <string>com.nilobject.redoist</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/Users/jonjohnson/.rvm/bin/ruby-1.9.3-p547@redfocus</string>
+    <string>/Users/jonjohnson/.rvm/bin/ruby-1.9.3-p547@redoist</string>
     <string>./redoist.rb</string>
   </array>
   <key>RunAtLoad</key>
