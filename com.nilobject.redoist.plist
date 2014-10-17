@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.nilobject.redoist</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/jonjohnson/.rvm/bin/ruby-1.9.3-p547@redfocus</string>
+    <string>./redoist.rb</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardErrorPath</key>
+  <string>log/error.log</string>
+  <key>StandardOutPath</key>
+  <string>log/access.log</string>
+  <key>WorkingDirectory</key>
+  <string>/Users/jonjohnson/Development/redoist/</string>
+  <key>StartInterval</key>
+  <integer>360</integer>
+</dict>
+</plist>
