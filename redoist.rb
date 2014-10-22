@@ -50,8 +50,7 @@ redmineTasks['issues'].each do |issue|
     effective_due = Time.now
   end
 
-  content = ([issue['subject'], "#{config['redmine-base-url']}/issues/#{issue['id']}"] + tags).join(" ")
-#  puts issue['priority']
+  content = ([issue['subject'].gsub("@",".@"), "#{config['redmine-base-url']}/issues/#{issue['id']}"] + tags).join(" ")
   priority_map = config['todoist-priority-map'] || {}
   priority = priority_map[issue['priority']['name']] || 1
 
@@ -62,16 +61,13 @@ redmineTasks['issues'].each do |issue|
     params['date_string'] = effective_due.strftime("%d/%m/%Y")
   end
   if task && !task.complete?
- #   puts "Updating task #{issue['id']}"
     params["id"] = task.id
     params["content"] = content
-    #params["due_date"] = effective_due.strftime("%Y-%m-%d") if effective_due
 
     result = Todoist::Base.get('/updateItem', :query => params)
 
     newLocalMap[issue['id']] = localMap[issue['id'].to_s]
   else
-  #  puts "Creating #{content}"
     task = Todoist::Task.create(content, project, params)
     newLocalMap[issue['id'].to_s] = task.id
   end
@@ -85,7 +81,6 @@ remoteMap = newLocalMap.invert
 
 serverTasks.each do |task|
   if remoteMap[task.id].nil? && task.content.include?(config['redmine-base-url'])
-   # puts "Completing #{task.id}"
     begin
       Todoist::Task.complete([task.id])
     rescue => exc
@@ -93,4 +88,3 @@ serverTasks.each do |task|
   end
 end
 
-#puts "Done."
