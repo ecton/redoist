@@ -42,6 +42,9 @@ redmineTasks['issues'].each do |issue|
 
   tags = []
   tags << config["todoist-tag"] unless config["todoist-tag"].to_s.empty?
+  if config['redmine-project-label-map'] && config['redmine-project-label-map'][issue['project']['name']]
+    tags << config['redmine-project-label-map'][issue['project']['name']]
+  end
 
   status_tag = config['redmine-status-label-map'][issue['status']['name']] if config['redmine-status-label-map']
   tags << status_tag unless status_tag.to_s.empty?
